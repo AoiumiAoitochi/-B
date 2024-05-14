@@ -34,10 +34,14 @@
         <% end %>
         <td class="center">
           <% if current_user.admin? && !current_user?(user) %>
-            <%= link_to '基本情報編集', edit_basic_info_user_path(user), data: { turbo_frame: 'modal' }, class: "btn btn-success" %>
-            <%= link_to "削除", user_path(user), method: :delete, data: { turbo_confirm: "削除してよろしいですか？" }, class: "btn btn-danger", style: "display: inline-block;" %>
-
-
+            <div style="display: inline-block;">
+               <%= link_to '基本情報編集', edit_basic_info_user_path(user), data: { turbo_frame: 'modal' }, class: "btn btn-success" %>
+            </div>
+            <div style="display: inline-block;">
+               <%= button_to user_path(user), method: :delete, data: { turbo_confirm: "削除してよろしいですか？" }, class: "btn btn-danger", form: { class: "inline-form" } do %>
+                 削除
+               <% end %>
+            </div>
           <% end %>
         </td>
       </tr>
