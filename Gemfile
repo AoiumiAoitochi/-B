@@ -32,6 +32,11 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem 'will_paginate', '~> 3.3' # この行を追加してください。
+
+gem 'bootstrap-will_paginate', '1.0.0' # この行を追加してください。
+
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
