@@ -5,44 +5,17 @@
   text-align: center;
 }
 
-.label-signup {
-  margin-top: 5px;
-}
+/* ユーザー勤怠情報テーブル */
 
-.btn-signup {
-  margin-top: 10px;
-}
-
-/* ユーザー情報テーブル */
-
-.user-table {
-  vertical-align: middle;
-  text-align: center;
-}
-
-/* 入力フォーム */
-
-.label-signup {
-  margin-top: 5px;
-}
-
-.btn-signup {
-  margin-top: 10px;
-}
-
-.label-user--edit {
-  margin-top: 5px;
-}
-
-.btn-user--edit {
-  margin-top: 10px;
-}
-
-/* ユーザー情報テーブル */
-
-.user-table {
-  vertical-align: middle;
-  text-align: center;
+#table-attendances {
+  th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  td {
+    vertical-align: middle;
+    text-align: center;
+  }
 }
 
 /* 入力フォーム */
@@ -81,3 +54,15 @@
   margin: 15px 0;
   width: 30%;
 }
+
+/* 任意のCSSファイル */
+.blue {
+  color: blue; /* 土曜日のセルの背景色を青色に設定 */
+}
+
+.red {
+  color: red; /* 日曜日のセルの背景色を赤色に設定 */
+}
+
+
+

@@ -9,4 +9,10 @@ module ApplicationHelper
       page_name + " | " + base_title # 文字列を連結して返す
     end
   end
+
+
+  def weekend?(date)
+    date.saturday? || date.sunday?
+  end
+
 end
