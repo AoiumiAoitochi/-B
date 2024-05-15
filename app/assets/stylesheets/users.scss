@@ -64,5 +64,11 @@
   color: red; /* 日曜日のセルの背景色を赤色に設定 */
 }
 
-
+.btn-custom {
+  background-color: #ffffff; /* ボタンの背景色を青に変更 */
+  color: #000000; /* ボタンのテキスト色を白に変更 */
+}
+.btn-custom:hover {
+  background-color: #c1d9f2; /* マウスを乗せたときの背景色 */
+}
 
