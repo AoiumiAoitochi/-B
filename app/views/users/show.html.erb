@@ -25,12 +25,20 @@
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
       <tr>
-        <th>日付</th>
-        <th>曜日</th>
-        <th>出社</th>
-        <th>退社</th>
-        <th>在社時間</th>
-        <th>備考</th>
+        <th rowspan="2">日付</th>
+        <th rowspan="2">曜日</th>
+        <th colspan="2">出社</th> <!-- 出社の下に時と分のカラム -->
+        <th style="width: 200px;"></th>
+        <th colspan="2">退社</th> <!-- 退社の下に時と分のカラム -->
+        <th rowspan="2">在社時間</th>
+        <th rowspan="2">備考</th>
+      </tr>
+       <tr>
+        <th>時</th> <!-- 出社の下に時と分のカラム -->
+        <th>分</th> <!-- 退社の下に時と分のカラム -->
+        <th></th>
+        <th>時</th> <!-- 出社の下に時と分のカラム -->
+        <th>分</th> <!-- 退社の下に時と分のカラム -->
       </tr>
     </thead>
 
@@ -39,13 +47,29 @@
         <tr>
          <td><%= l(day.worked_on, format: :short) %></td>
          <td class="<%= 'blue' if day.worked_on.saturday? %> <%= 'red' if day.worked_on.sunday? %>"><%= $days_of_the_week[day.worked_on.wday] %></td>
-         <td>
+         <% if day.started_at %>
+         <% started_at_hours = day.started_at.hour %>
+         <% started_at_minutes = (day.started_at.min / 15) * 15 %>
+          <td><%= started_at_hours %></td>
+          <td><%= format('%02d', started_at_minutes) %></td>
+         <% else %>
+          <td></td>
+          <td></td>
+         <% end %>
+          <td>
            <% if btn_text = attendance_state(day) %>
-            <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), data: { turbo_method: :patch }, class: "btn btn-primary btn-attendance" %>
+            <%= link_to "#{btn_text}", user_attendance_path(@user, day), data: { turbo_method: :patch }, class: "btn btn-primary btn-attendance" %>
            <% end %>
           </td>
-          <td><%= l(day.started_at, format: :time) if day.started_at.present? %></td>
-          <td><%= l(day.finished_at, format: :time) if day.finished_at.present? %></td>
+          <% if day.finished_at %>
+          <% finished_at_hours = day.finished_at.hour %>
+          <% finished_at_minutes = (day.finished_at.min / 15) * 15 %>
+           <td><%= finished_at_hours %></td>
+           <td><%= format('%02d', finished_at_minutes) %></td>
+          <% else %>
+           <td></td>
+           <td></td>
+          <% end %>
           <td></td>
           <td></td>
        </tr>
