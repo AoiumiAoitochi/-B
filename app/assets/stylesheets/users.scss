@@ -63,13 +63,26 @@
 .red {
   color: red; /* 日曜日のセルの背景色を赤色に設定 */
 }
+.nav-row {
+  padding-top: px; /* 反応なし*/
+}
 
 .btn-custom {
+  font-size: 13px;
+  width: 50px; /* ボタンの幅 */
+  height: 25px; /* ボタンの高さ */ 
+  padding-top: 3px;
+  border: 1px solid black; /* 黒い枠を付ける */
   background-color: #ffffff; /* ボタンの背景色を青に変更 */
   color: #000000; /* ボタンのテキスト色を白に変更 */
+  
 }
 .btn-custom:hover {
   background-color: #c1d9f2; /* マウスを乗せたときの背景色 */
+}
+
+.attendance-title {
+  font-size: 14px;
 }
 
 .btn-attendance {
