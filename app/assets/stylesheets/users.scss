@@ -72,4 +72,22 @@
   background-color: #c1d9f2; /* マウスを乗せたときの背景色 */
 }
 
+.btn-attendance {
+  /* ボタンのスタイル */
+  width: 150px; /* ボタンの幅 */
+  height: 20px; /* ボタンの高さ */ 
+  align-items: center;
+  justify-content: flex-start; /* 水平方向に左揃え */
+  
+}
+.btn-text {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 25px;
+  line-height: 1; /* 行の高さ */
+  margin-top: -2px; /* テキストの位置を調整するためのマージン */
+  padding-left: 40px;/* 左側にパディングを追加してテキストの開始位置を調整 */
+  padding-top: 3px;
+}
+
 
