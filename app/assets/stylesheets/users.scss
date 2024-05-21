@@ -103,4 +103,19 @@
   padding-top: 3px;
 }
 
+.button-container {
+  height: 50px; /* ボタンの高さ */ 
+}
+
+.btn-blue {
+  width: 150px; /* ボタンの幅 */
+  height: 30px; /* ボタンの高さ */
+  background-color: rgb(105, 105, 240); /* ボタンの背景色を青に設定 */
+  color: white;           /* ボタンの文字色を白に設定 */
+  border-color: blue;     /* ボタンの枠線の色を青に設定 */
+}
+
+.btn-blue:hover {
+  background-color: #c1d9f2; /* マウスを乗せたときの背景色 */
+}
 
