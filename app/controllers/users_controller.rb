@@ -68,9 +68,9 @@ class UsersController < ApplicationController
 
   def update_basic_info
     if @user.update(basic_info_params)
-      flash[:success] = "#{@user.name}の基本情報を更新しました。"
+      flash.now[:success] = "#{@user.name}の基本情報を更新しました。"
     else
-      flash[:danger] = "#{@user.name}の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
+      flash.now[:danger] = "#{@user.name}の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
 
     respond_to do |format|
@@ -83,5 +83,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
+  end
+
+  def basic_info_params
+    params.require(:user).permit(:name, :email, :department, :basic_time, :work_time)
   end
 end
