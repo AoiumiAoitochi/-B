@@ -1,7 +1,6 @@
 <% provide(:title, 'All Users') %>
 <h1>ユーザー一覧</h1>
 
-<%= turbo_frame_tag 'frame-id', src: request.path %>
 
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
@@ -13,7 +12,7 @@
         <% if current_user.admin? %>
           <th class="center"><%= User.human_attribute_name :basic_time %></th>
           <th class="center"><%= User.human_attribute_name :work_time %></th>
-        <% end %>
+        <% end %> 
         <th></th>
       </tr>
     </thead>
@@ -50,3 +49,4 @@
   </table>
   <%= will_paginate %>
 </div>
+

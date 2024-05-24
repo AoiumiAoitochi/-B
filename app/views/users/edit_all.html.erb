@@ -1,0 +1,24 @@
+<% provide(:title, "全ユーザーの情報を編集") %>
+<% provide(:class_text, 'user--edit') %>
+<% provide(:button_text, '更新') %>
+
+<% if current_user.admin? %>
+  <div class="container text-center">
+    <h1>基本情報の更新</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-md-offset-3">
+        <%= form_tag update_all_users_path, method: :patch do %>
+          <div class="form-group">
+            <%= label_tag "basic_time", "基本勤務時間" %>
+            <%= text_field_tag "basic_time", current_user.basic_time, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= label_tag "work_time", "所定勤務時間" %>
+            <%= text_field_tag "work_time", current_user.work_time, class: "form-control" %>
+          </div>
+          <%= submit_tag "更新", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

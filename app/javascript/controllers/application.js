@@ -1,5 +1,6 @@
-import { Application } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
+import { Application } from "@hotwired/stimulus"
+
 
 Turbo.start()
 

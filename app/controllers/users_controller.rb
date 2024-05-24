@@ -53,6 +53,12 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def edit_all
+    # 一括編集の処理を実装
+  end
+
+  def update_all
+  end
 
   def edit_basic_info
     @user = User.find(params[:id])
@@ -68,7 +74,7 @@ class UsersController < ApplicationController
 
   def update_basic_info
     if @user.update(basic_info_params)
-      flash.now[:success] = "#{@user.name}の基本情報を更新しました。"
+      flash.now[:success] = "#{@user.name}の基本情報を更新しました!"
     else
       flash.now[:danger] = "#{@user.name}の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
