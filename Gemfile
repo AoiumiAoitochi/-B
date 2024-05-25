@@ -37,6 +37,8 @@ gem 'will_paginate', '~> 3.3' # この行を追加してください。
 gem 'bootstrap-will_paginate', '1.0.0' # この行を追加してください。
 
 gem 'rails-i18n'
+
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

@@ -10,6 +10,8 @@ module ApplicationHelper
     end
   end
 
+  
+
 
   def weekend?(date)
     date.saturday? || date.sunday?

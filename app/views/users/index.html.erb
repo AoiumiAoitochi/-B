@@ -1,6 +1,19 @@
 <% provide(:title, 'All Users') %>
-<h1>ユーザー一覧</h1>
+<% if @search_word.present? %>
+  <h1>検索結果</h1>
+<% else %>  
+  <h1>ユーザー一覧</h1>
+<% end %>
 
+  <!-- ユーザー検索フォーム -->
+  <%= form_with(url: users_path, method: :get) do |f| %>
+    <div class="form-group">
+      <%= f.label :search, "ユーザー名で検索" %>
+      <%= f.text_field :search, class: "form-control", placeholder: "ユーザー名を入力してください" %>
+    </div>
+    <%= f.submit "検索", class: "btn btn-primary" %>
+  <% end %>
+  
 
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
@@ -8,12 +21,6 @@
     <thead>
       <tr>
         <th><%= User.human_attribute_name :name %></th>
-        <th class="center"><%= User.human_attribute_name :department %></th>
-        <% if current_user.admin? %>
-          <th class="center"><%= User.human_attribute_name :basic_time %></th>
-          <th class="center"><%= User.human_attribute_name :work_time %></th>
-        <% end %> 
-        <th></th>
       </tr>
     </thead>
 
@@ -27,21 +34,12 @@
             <%= user.name %>
           <% end %>
         </td>
-        <td class="center"><%= user.department.present? ? user.department : "未所属" %></td>
-        <% if current_user.admin? %>
-          <td class="center"><%= format_basic_info(user.basic_time) %></td>
-          <td class="center"><%= format_basic_info(user.work_time) %></td>
-        <% end %>
+      </thead>
+    
         <td class="center">
           <% if current_user.admin? && !current_user?(user) %>
-            <div style="display: inline-block;">
-               <%= link_to '基本情報編集', edit_basic_info_user_path(user), data: { turbo_frame: 'modal' }, class: "btn btn-success" %>
-            </div>
-            <div style="display: inline-block;">
-               <%= button_to user_path(user), method: :delete, data: { turbo_confirm: "削除してよろしいですか？" }, class: "btn btn-danger", form: { class: "inline-form" } do %>
-                 削除
-               <% end %>
-            </div>
+            <%= link_to '基本情報編集', edit_basic_info_user_path(user), data: { turbo_frame: 'modal' }, class: "btn btn-success" %>
+            <%= link_to "削除", user, data: { turbo_method: :delete, confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
           <% end %>
         </td>
       </tr>
@@ -49,4 +47,3 @@
   </table>
   <%= will_paginate %>
 </div>
-

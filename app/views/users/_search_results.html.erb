@@ -1,0 +1,17 @@
+<!-- app/views/users/_search_results.html.erb -->
+
+<table class="table table-condensed table-hover" id="table-users">
+  <thead>
+    <tr>
+      <th><%= User.human_attribute_name :name %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, user %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

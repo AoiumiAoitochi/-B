@@ -1,19 +1,33 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update, ]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
   before_action :set_one_month, only: :show
 
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = if params[:search].present?
+      @search_word = params[:search]
+      User.where("name LIKE ?", "%#{@search_word}%").paginate(page: params[:page])
+    else
+      @search_word = nil
+      User.paginate(page: params[:page])
+    end
   end
+
 
 
   def show
-    @worked_sum = @attendances.where.not(started_at: nil).count
+    @user = User.find(params[:id])
+    if current_user.admin? || current_user?(@user)
+      @worked_sum = @attendances.where(user_id: @user.id).where.not(started_at: nil).count
+    else
+      flash[:danger] = "他のユーザーの情報にアクセスする権限がありません。"
+      redirect_to root_url
+    end
   end
+
 
 
   def new
@@ -58,7 +72,26 @@ class UsersController < ApplicationController
   end
 
   def update_all
+    users = User.all
+      new_basic_time = params[:basic_time]
+      new_work_time = params[:work_time]
+      success = true
+
+      users.each do |user|
+        if !user.update(basic_time: new_basic_time, work_time: new_work_time)
+          success = false
+          break
+        end
+    end
+
+    if success
+      flash[:success] = "全ユーザーの基本情報が更新されました。"
+    else
+      flash[:danger] = "更新は失敗しました。"
+    end
+      redirect_to users_path
   end
+
 
   def edit_basic_info
     @user = User.find(params[:id])
