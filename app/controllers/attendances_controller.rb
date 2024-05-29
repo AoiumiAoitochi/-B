@@ -9,7 +9,6 @@ class AttendancesController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @attendance = Attendance.find(params[:id])
-    # 出勤時間が未登録であることを判定します。
     if @attendance.started_at.nil?
       if @attendance.update(started_at: Time.current.change(sec: 0))
         flash[:info] = "おはようございます！"
@@ -30,34 +29,56 @@ class AttendancesController < ApplicationController
   end
 
   def update_one_month
-    ActiveRecord::Base.transaction do # トランザクションを開始します。
+    ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        attendance.update!(item)
+        if item[:started_at].blank? && item[:finished_at].present?
+          flash[:danger] = "出社時間を入力してください！"
+          redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
+        elsif item[:started_at].present? &&  item[:finished_at].blank?
+          flash[:danger] = "出社のみの更新ができません!"
+          redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
+        elsif item[:started_at].present? &&  item[:finished_at].present?
+          if item[:finished_at] < item[:started_at]
+            flash[:danger] = "退社時間の見直しをしてください!"
+            redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
+          else
+            attendance.update!(item)
+          end
+        end
       end
+      flash[:success] = "勤怠情報を更新しました!"
+      redirect_to user_url(date: params[:date])
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "無効な入力データがあります!確認してください!"
+      redirect_to attendances_edit_one_month_user_url(date: params[:date])
     end
-    flash[:success] = "勤怠情報を更新しました。"
-    redirect_to user_url(date: params[:date])
-  rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
-    flash[:danger] = "無効な入力データがあります。"
-    redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
   private
 
-    # 1ヶ月分の勤怠情報を扱います。
-    def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :overtime_instruction, :supervisor])[:attendances]
-    end
+  def attendances_params
+    params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :overtime_instruction, :supervisor])[:attendances]
+  end
 
-    # beforeフィルター
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # 管理権限者、または現在ログインしているユーザーを許可します。
-    def admin_or_correct_user
-      @user = User.find(params[:user_id]) if @user.blank?
-      unless current_user?(@user) || current_user.admin?
-        flash[:danger] = "編集権限がありません。"
-        redirect_to(root_url)
-      end
+  def admin_or_correct_user
+    @user = User.find(params[:user_id]) if @user.blank?
+    unless current_user?(@user) || current_user.admin?
+      flash[:danger] = "編集権限がありません。"
+      redirect_to(root_url)
     end
+  end
+
+  def set_one_month
+    @first_day = params[:date].nil? ? Date.current.beginning_of_month : params[:date].to_date
+    @last_day = @first_day.end_of_month
+    @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
+  rescue ActiveRecord::RecordNotFound
+    flash[:danger] = "正しいユーザー情報が取得できませんでした。"
+    redirect_to root_url
+  end
 end

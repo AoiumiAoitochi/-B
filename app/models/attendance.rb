@@ -11,6 +11,7 @@ class Attendance < ApplicationRecord
   # 出勤・退勤時間どちらも存在する時、出勤時間より早い退勤時間は無効
   validate :started_at_than_finished_at_fast_if_invalid
 
+
   def finished_at_is_invalid_without_a_started_at
     errors.add(:started_at, "を入力してください。") if started_at.blank? && finished_at.present?
   end
@@ -21,12 +22,7 @@ class Attendance < ApplicationRecord
     end
   end
 
-   # 出勤時間のみの登録を無効にするためのバリデーション
-   validate :cannot_register_started_at_without_finished_at
-
    private
 
-   def cannot_register_started_at_without_finished_at
-     errors.add(:started_at, "を登録する場合は、退勤時間も入力してください。") if started_at.present? && finished_at.blank?
-   end
 end
+

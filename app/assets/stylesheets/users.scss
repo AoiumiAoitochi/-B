@@ -119,3 +119,32 @@
   background-color: #c1d9f2; /* マウスを乗せたときの背景色 */
 }
 
+.search-form {
+  float: right;
+  margin-top: -20px; // 位置を調整します
+}
+
+.search-input {
+  width: 300px; /* 入力フォームの幅を調整 */
+  font-size: 16px; /* フォントサイズを大きく */
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.actions .btn-link {
+  color: inherit; // ボタンの色を無くす
+  text-decoration: none; // 下線を消す
+  padding: 0; // 余白を消す
+  margin: 0 5px; // ボタン間の余白
+}
+
+.actions .btn-link:hover {
+  text-decoration: underline; // ホバー時の装飾
+}
+
+.table-condensed td {
+  vertical-align: middle; // 行の中央にテキストを配置
+}

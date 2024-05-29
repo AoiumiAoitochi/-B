@@ -2,6 +2,8 @@
 <% provide(:class_text, 'signup') %>
 <% provide(:button_text, '新規作成') %>
 <h1>アカウント作成</h1>
+<%= @user.errors.full_messages.join(", ") %>
+
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">

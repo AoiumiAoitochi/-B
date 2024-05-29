@@ -2,9 +2,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :correct_user, only: [:edit, :update, ]
-  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
+  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info,:index]
   before_action :set_one_month, only: :show
-
 
   def index
     @users = if params[:search].present?
@@ -42,7 +41,11 @@ class UsersController < ApplicationController
       flash[:success] = '新規作成に成功しました。'
       redirect_to @user
     else
-      render :new
+      flash.now[:danger] = @user.errors.full_messages.join(", ")
+      respond_to do |format|
+        format.html { render :new }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash_messages") }
+      end
     end
   end
 
@@ -56,7 +59,11 @@ class UsersController < ApplicationController
       flash[:success] = "ユーザー情報を更新しました。"
       redirect_to @user
     else
-      render :edit
+      flash.now[:danger] = @user.errors.full_messages.join(", ")
+      respond_to do |format|
+        format.html { render :new }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash_messages") }
+      end
     end
   end
 
@@ -85,9 +92,9 @@ class UsersController < ApplicationController
     end
 
     if success
-      flash[:success] = "全ユーザーの基本情報が更新されました。"
+      flash.now[:success] = "全ユーザーの基本情報が更新されました。"
     else
-      flash[:danger] = "更新は失敗しました。"
+      flash.now[:danger] = "更新は失敗しました。"
     end
       redirect_to users_path
   end
@@ -119,6 +126,17 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def admin_user
+    unless current_user.admin?
+      flash[:danger] = "管理者のみがアクセスできます。"
+      redirect_to(root_url)
+    end
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
