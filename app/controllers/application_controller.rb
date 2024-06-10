@@ -51,4 +51,9 @@ class ApplicationController < ActionController::Base
     flash[:danger] = "ページ情報の取得に失敗しました、再アクセスしてください。"
     redirect_to root_url
   end
+
+  def record_not_found
+    flash[:alert] = "The page you were looking for doesn't exist."
+    redirect_to root_path
+  end
 end

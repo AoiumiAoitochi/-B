@@ -135,7 +135,11 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+     @user = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+     flash[:danger] = "削除済み、または存在しないアカウントです。"
+     redirect_to root_path
+
   end
 
   def user_params
